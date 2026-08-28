@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "me.htrmc.voxyseamfix.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "MDICSectionRendererMixin",
+    "ModelBakeResultUploadMixin",
+    "ModelFactoryMixin",
+    "ShaderLoaderMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
