@@ -22,8 +22,9 @@
     }
   ],
   "depends": {
-    "minecraft": ">=26.2",
+    "minecraft": ">=1.21.9",
+    "java": ">=21",
     "fabricloader": ">=0.14.22",
-    "voxy": "*"
+    "voxy": ">=0.2.7-alpha"
   }
 }

@@ -1,7 +1,7 @@
 package me.htrmc.voxyseamfix;
 
 import net.fabricmc.api.ClientModInitializer;
-import net.minecraft.client.Minecraft;
+import org.lwjgl.system.MemoryUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,15 +30,19 @@ public class VoxySeamFix implements ClientModInitializer {
     }
 
     public static float relativeFluidSurfaceY(int baseSectionY) {
-        if (!config().enabled) {
-            return Float.NaN;
-        }
-        var level = Minecraft.getInstance().level;
-        if (level == null) {
+        if (!config().enabled || !(McCompat.seaLevel() instanceof Integer seaLevel)) {
             return Float.NaN;
         }
         int override = config().fluidSurfaceY;
-        int surface = override >= 0 ? override : level.getSeaLevel();
+        int surface = override >= 0 ? override : seaLevel;
         return surface - (float) (baseSectionY << 5);
+    }
+
+    public static void markFluidModel(Object blockState, Object bakeResult) {
+        if (!McCompat.isLiquid(blockState) || !(bakeResult instanceof ModelBufferAccess access)) {
+            return;
+        }
+        long flags = access.voxyseamfix$modelAddress() + BLOCK_MODEL_FLAGS_OFFSET;
+        MemoryUtil.memPutInt(flags, MemoryUtil.memGetInt(flags) | FLUID_MODEL_FLAG);
     }
 }
